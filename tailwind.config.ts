@@ -8,14 +8,29 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-    },
+    // screens: {
+    //   sm: "480px",
+    //   md: "768px",
+    //   lg: "976px",
+    //   xl: "1440px",
+    // },
+    // colors: {
+    //   // blue: "#00A0DC",
+    // },
+    // // fontFamily: {
+    // //   sans: ['Graphik', 'sans-serif'],
+    // //   serif: ['Merriweather', 'serif'],
+    // // },
+    // extend: {
+    //   spacing: {
+    //     "128": "32rem",
+    //     "144": "36rem",
+    //   },
+    //   borderRadius: {
+    //     "4xl": "2rem",
+    //   },
+    // },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
 export default config;
