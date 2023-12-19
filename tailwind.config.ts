@@ -14,9 +14,9 @@ const config: Config = {
     //   lg: "976px",
     //   xl: "1440px",
     // },
-    // colors: {
-    //   // blue: "#00A0DC",
-    // },
+    colors: {
+      // blue: "#00A0DC",
+    },
     // // fontFamily: {
     // //   sans: ['Graphik', 'sans-serif'],
     // //   serif: ['Merriweather', 'serif'],

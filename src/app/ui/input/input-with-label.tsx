@@ -1,20 +1,34 @@
+import { submitLinkedinUrl } from "@/app/lib/actions";
+import { ArrowUturnUpIcon } from "@heroicons/react/24/outline";
+import { useFormState } from "react-dom";
+
 export default function InputWithLabel() {
+  const initialState = { message: null, errors: {} };
+
+
   return (
-    <div>
-      <div className="mt-2">
-        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
-          <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-            https://www.linkedin.com/in/
-          </span>
+    <form action={submitLinkedinUrl}>
+      <div className="mt-2 flex rounded-md shadow-sm">
+        <div className="relative flex flex-grow items-stretch focus-within:z-10">
           <input
-            type="text"
+            type="url"
             name="linkedin-url"
             id="linkedin-url"
-            className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-            placeholder="seifabdelaziz"
+            className="block w-full rounded-none rounded-l-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
+            placeholder="https://www.linkedin.com/in/seifabdelaziz/"
           />
         </div>
+        <button
+          type="button"
+          className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          <ArrowUturnUpIcon
+            className="-ml-0.5 h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
+          Submit
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
