@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 
 export async function submitLinkedinUrl(formData: FormData) {
   console.log(formData);
+  const linkedinUrl = formData.get("linkedinUrl");
+  // verify it is a valid linkedin url
+  // https://www.linkedin.com/in/seifabdelaziz/
   //   const validatedFields = CreateInvoice.safeParse({
   //     customerId: formData.get("customerId"),
   //     amount: formData.get("amount"),
@@ -35,4 +38,9 @@ export async function submitLinkedinUrl(formData: FormData) {
 
   // revalidatePath("/dashboard/invoices");
   // redirect("/dashboard/invoices");
+}
+
+function isValidLinkedInUrl(url: string): boolean {
+  const pattern = /^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+$/;
+  return pattern.test(url);
 }
