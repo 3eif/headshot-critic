@@ -62,7 +62,6 @@ export const authOptions = {
         const imageUrl = await getProfilePictureUrl(accessToken);
         const defaultImage =
           "https://cdn-icons-png.flaticon.com/512/174/174857.png";
-        console.log(imageUrl);
         return {
           id: profile.sub,
           image: imageUrl ?? defaultImage,
