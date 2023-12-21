@@ -1,9 +1,7 @@
 "use client";
 
 import { UploadDropzone } from "@/utils/uploadthing";
-import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
-import { UploadFileResponse } from "uploadthing/client";
 
 export default function UploadPhoto() {
   const router = useRouter();

@@ -91,11 +91,7 @@ import SessionProvider from "@/app/session-provider";
 
 export default async function Page() {
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const session = await getServerSession();
-
   return (
-    <SessionProvider session={session}>
       <SubmitForm />
-    </SessionProvider>
   );
 }
