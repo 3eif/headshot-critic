@@ -85,16 +85,17 @@
 //   );
 // }
 
-import { Dialog } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import InputWithLabel from "./ui/input/input-with-label";
-import UploadPhoto from "./ui/input/upload-photo";
 import SubmitForm from "./ui/input/submit-form";
+import { getServerSession } from "next-auth/next";
+import SessionProvider from "@/app/session-provider";
+import Result from "./ui/result/result";
 
 export default async function Page() {
   // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const session = await getServerSession();
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     <div className="bg-white">
       <div className="relative isolate px-6 lg:px-8">
         <div
@@ -118,7 +119,12 @@ export default async function Page() {
               Upload your headshot via your LinkedIn profile or by uploading an
               image and we&apos;ll give you feedback on it.
             </p>
-            <SubmitForm />
+            {session?.user?.image ? (
+              <Result imageUrl={session?.user.image} />
+            ) : null}
+            <SessionProvider session={session}>
+              <SubmitForm />
+            </SessionProvider>
           </div>
         </div>
         <div
