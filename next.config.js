@@ -11,6 +11,7 @@ const config = {
             {
                 protocol: 'https',
                 hostname: 'media.licdn.com',
+                pathname: '/**',
                 port: '',
             },
         ],

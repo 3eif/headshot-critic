@@ -2,17 +2,24 @@
 
 import { UploadDropzone } from "@/utils/uploadthing";
 import { PhotoIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
+import { UploadFileResponse } from "uploadthing/client";
 
 export default function UploadPhoto() {
+  const router = useRouter();
+
   return (
     <>
       <UploadDropzone
-        className="ut-readying:bg-blue-500 ut-label:text-md ut-label:font-semibold ut-label:text-blue-400 ut-button:bg-blue-400 mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
+        className="ut-label:text-md mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 ut-button:bg-blue-400 ut-label:font-semibold ut-label:text-blue-400 ut-readying:bg-blue-500"
         endpoint="imageUploader"
         onClientUploadComplete={(res) => {
           // Do something with the response
-          console.log("Files: ", res);
-          alert("Upload Completed");
+          if (res[0]?.url === undefined) {
+            alert("Upload Failed");
+            return;
+          }
+          void router.push(`/u?i=${res[0]?.url}`);
         }}
         onUploadError={(error: Error) => {
           // Do something with the error.

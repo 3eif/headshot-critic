@@ -21,6 +21,7 @@
     "@trpc/server": "^10.43.6",
     "@uploadthing/react": "^6.0.2",
     "ai": "^2.2.29",
+    "axios": "^1.6.2",
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
     "openai": "^4.23.0",
