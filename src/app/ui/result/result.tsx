@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import HeadshotImage from "./headshot-image";
-import Link from "next/link";
+import AiFeedback from "./ai-feedback";
 
 export default function Result({ imageUrl }: { imageUrl: string | undefined }) {
   return (
@@ -20,6 +20,7 @@ export default function Result({ imageUrl }: { imageUrl: string | undefined }) {
       >
         Try another photo
       </button>
+      <AiFeedback imageUrl={imageUrl} />
     </div>
   );
 }
