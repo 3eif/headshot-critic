@@ -72,9 +72,7 @@ export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
   useEffect(() => {
     if (imageUrl && !hasCalledComplete.current) {
       hasCalledComplete.current = true;
-      complete(imageUrl)
-        .then(() => console.log("completed"))
-        .catch((err) => console.log(err));
+      void complete(imageUrl);
     }
   }, [imageUrl, complete]);
 
