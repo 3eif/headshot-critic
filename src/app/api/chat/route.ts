@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
+import { kv } from "@vercel/kv";
+import { Ratelimit } from "@upstash/ratelimit";
 
 export const runtime = "edge";
 
@@ -8,6 +10,33 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    const ip = req.headers.get("x-forwarded-for");
+    const ratelimit = new Ratelimit({
+      redis: kv,
+      // rate limit to 5 requests per 10 seconds
+      limiter: Ratelimit.slidingWindow(5, "1d"),
+    });
+
+    const { success, limit, reset, remaining } = await ratelimit.limit(
+      `ratelimit_${ip}`,
+    );
+
+    if (!success) {
+      return new Response("You have reached your request limit for the day.", {
+        status: 429,
+        headers: {
+          "X-RateLimit-Limit": limit.toString(),
+          "X-RateLimit-Remaining": remaining.toString(),
+          "X-RateLimit-Reset": reset.toString(),
+        },
+      });
+    }
+  } else {
+    console.log(
+      "KV_REST_API_URL and KV_REST_API_TOKEN env vars not found, not rate limiting...",
+    );
+  }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { prompt } = await req.json();
 
@@ -66,7 +95,7 @@ Include specific suggestions for improvement in each category, based on the crit
   const response = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
     stream: true,
-    temperature: 0.3,
+    temperature: 0.2,
     messages: [
       {
         role: "user",

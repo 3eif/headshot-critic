@@ -16,6 +16,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import FeedbackLoading from "./feedback-loading";
+import { toast } from "sonner";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -66,6 +67,10 @@ export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
       );
       setTotalScore(totalScore / 5);
       setOutput(feedback);
+    },
+    onError(error) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      toast.error(error.message);
     },
   });
 
