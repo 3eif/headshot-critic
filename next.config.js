@@ -10,8 +10,8 @@ const config = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'media.licdn.com',
-                pathname: '/**',
+                hostname: 'utfs.io',
+                pathname: '/f/**',
                 port: '',
             },
         ],

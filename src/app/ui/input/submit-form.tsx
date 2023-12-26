@@ -3,7 +3,7 @@ import UploadPhoto from "./upload-photo";
 
 export default async function SubmitForm() {
   return (
-    <div className="mt-10 items-center justify-center gap-x-6">
+    <div className="mt-10 items-center justify-center gap-x-6 ">
       <LoginButton />
       <p className="my-5">Or</p>
       <UploadPhoto />
