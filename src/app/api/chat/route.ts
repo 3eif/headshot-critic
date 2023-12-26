@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({
       redis: kv,
-      // rate limit to 5 requests per 10 seconds
+      // rate limit to 5 requests per day
       limiter: Ratelimit.slidingWindow(5, "1d"),
     });
 
@@ -23,14 +23,17 @@ export async function POST(req: Request) {
     );
 
     if (!success) {
-      return new Response("You have reached your request limit for the day.", {
-        status: 429,
-        headers: {
-          "X-RateLimit-Limit": limit.toString(),
-          "X-RateLimit-Remaining": remaining.toString(),
-          "X-RateLimit-Reset": reset.toString(),
+      return new Response(
+        "You have reached your daily request limit of 5 requests.",
+        {
+          status: 429,
+          headers: {
+            "X-RateLimit-Limit": limit.toString(),
+            "X-RateLimit-Remaining": remaining.toString(),
+            "X-RateLimit-Reset": reset.toString(),
+          },
         },
-      });
+      );
     }
   } else {
     console.log(

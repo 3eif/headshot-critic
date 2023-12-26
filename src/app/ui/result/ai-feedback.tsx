@@ -2,21 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useCompletion } from "ai/react";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CheckIcon,
-} from "@heroicons/react/20/solid";
+import { CheckIcon } from "@heroicons/react/20/solid";
 import {
   CubeTransparentIcon,
-  CameraIcon,
   SunIcon,
   FaceSmileIcon,
   PhotoIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import FeedbackLoading from "./feedback-loading";
-import { toast } from "sonner";
+import Error from "./error";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -55,22 +49,26 @@ const categoryIcon = (category: string) => {
 export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
   const [output, setOutput] = useState<Feedback[]>();
   const [totalScore, setTotalScore] = useState<number>(0);
+  const [error, setError] = useState<string>();
 
   const { completion, complete } = useCompletion({
     api: "/api/chat",
     onFinish: (prompt, completion) => {
       completion = completion.replace(/```json/g, "").replace(/```/g, "");
-      const feedback = JSON.parse(completion) as Feedback[];
-      const totalScore = feedback.reduce(
-        (total, category) => total + category.score,
-        0,
-      );
-      setTotalScore(totalScore / 5);
-      setOutput(feedback);
+      try {
+        const feedback = JSON.parse(completion) as Feedback[];
+        const totalScore = feedback.reduce(
+          (total, category) => total + category.score,
+          0,
+        );
+        setTotalScore(totalScore / 5);
+        setOutput(feedback);
+      } catch (error) {
+        setError(completion);
+      }
     },
     onError(error) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      toast.error(error.message);
+      setError(error.message);
     },
   });
 
@@ -137,7 +135,7 @@ export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
 
   return (
     <div className="stretch flex w-full flex-col">
-      {/* {completion && <p>{completion}</p>} */}
+      {error && <Error error={error} />}
       {!output ? (
         <nav aria-label="Progress">
           <ol role="list" className="items-start overflow-hidden">
