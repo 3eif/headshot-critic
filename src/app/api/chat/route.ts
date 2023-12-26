@@ -14,14 +14,34 @@ export async function POST(req: Request) {
   const imagePrompt = `
 Analyze my headshot and provide a structured evaluation in the form of a JSON array. Rate each of the following categories on a scale from 0 to 100, where 100 represents excellence. Include detailed, professional, and constructive feedback for each category.
 
-Categories to be evaluated:
-1. Composition
-2. Lighting
-3. Clothing
-4. Expression
-5. Background
+Categories to be evaluated, with specific criteria:
 
-Return the output as a JSON array (don't return any Markdown), with each category's score, feedback in an array. For example:
+1. Composition
+    - Framing and positioning in the frame
+    - Use of space and cropping
+    - Angle and perspective
+
+2. Lighting
+    - Quality of light (soft, harsh, even)
+    - Direction of light (front, side, back)
+    - Shadows and highlights
+
+3. Clothing
+    - Appropriateness for the intended purpose
+    - Fit and style
+    - Color coordination with the overall image
+
+4. Expression
+    - Authenticity and naturalness
+    - Eye contact and engagement
+    - Emotion conveyed
+
+5. Background
+    - Relevance and distraction level
+    - Complementing or contrasting with the subject
+    - Overall aesthetic contribution to the image
+
+Return the output as a JSON array (don't return any Markdown), with each category's score, and feedback in an array. For example:
 
 Query: [image]
 
@@ -30,17 +50,18 @@ Result:
   {
     "category": "composition",
     "score": [score],
-    "feedback": "[feedback]"
+    "feedback": "[feedback based on specific criteria]"
   },
   {
     "category": "lighting",
     "score": [score],
-    "feedback": "[feedback]"
+    "feedback": "[feedback based on specific criteria]"
   },
   ...
 ]
 
-Include specific suggestions for improvement in each category, if applicable`;
+Include specific suggestions for improvement in each category, based on the criteria, if applicable.
+`;
 
   const response = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
