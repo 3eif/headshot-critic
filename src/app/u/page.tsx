@@ -6,18 +6,20 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 export default function Page() {
-  // const router = useRouter();
-  // const searchParams = useSearchParams();
+  const router = useRouter();
+  const { data: session } = useSession();
+  const searchParams = useSearchParams();
 
-  // const imageUrlParam = searchParams.get("i");
-  // useEffect(() => {
-  //   if (!imageUrlParam ) {
-  //     const { data: session } = useSession();
-  //     if(session?.user?.image) void router.replace(`/u?i=${session?.user?.image}`);
-  //   }
-  // });
+  const imageUrlParam = searchParams.get("i");
+  useEffect(() => {
+    if (!imageUrlParam && session?.user?.image) {
+      void router.replace(`/u?i=${session?.user?.image}`);
+    }
+  });
 
   return (
-    <Result imageUrl="https://utfs.io/f/676c9204-b43d-4b1d-9a06-2630618c1566-4j3nsw.jpg" />
+    <Result
+      imageUrl={imageUrlParam?.toString() ?? session?.user?.image ?? ""}
+    />
   );
 }
