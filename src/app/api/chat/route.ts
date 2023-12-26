@@ -41,7 +41,7 @@ Categories to be evaluated, with specific criteria:
     - Complementing or contrasting with the subject
     - Overall aesthetic contribution to the image
 
-Return the output as a JSON array (don't return any Markdown), with each category's score, and feedback in an array. For example:
+Return the output as a JSON array (don't return any Markdown), with each category's score, and feedback in an array. Ensure the feedback is no more than 2 sentences. For example:
 
 Query: [image]
 
