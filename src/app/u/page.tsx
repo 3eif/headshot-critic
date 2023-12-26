@@ -18,8 +18,10 @@ export default function Page() {
   });
 
   return (
-    <Result
-      imageUrl={imageUrlParam?.toString() ?? session?.user?.image ?? ""}
-    />
+    <div className="">
+      <Result
+        imageUrl={imageUrlParam?.toString() ?? session?.user?.image ?? ""}
+      />
+    </div>
   );
 }

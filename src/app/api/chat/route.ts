@@ -4,51 +4,67 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 export const runtime = "edge";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY ?? "",
 });
 
 export async function POST(req: Request) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { imageUrl } = await req.json();
+  const { prompt } = await req.json();
 
-  const prompt = `
-Given a LinkedIn profile picture, provide detailed feedback in a professional and constructive manner. Rate the following categories on a scale from 0 to 100, with 100 representing the best possible outcome. Each category contributes equally to a total score out of 100. Offer suggestions for improvement if applicable.
+  const imagePrompt = `
+  Analyze a headshot and provide a structured evaluation in the form of a JSON object. Rate each of the following categories on a scale from 0 to 100, where 100 represents excellence. Include detailed, professional, and constructive feedback for each category. Calculate a weighted average based on the scores to give a total score out of 100. Conclude with a summary of the overall impression in a professional context and suggest any improvements to enhance the professional impact of the photo.
+  
+  Categories to be evaluated, each contributing equally (16.67%) to the total score:
+  1. Composition
+  2. Lighting
+  3. Clothing
+  4. Expression
+  5. Background
+  6. Image Quality
+  
+  Only return the output as a JSON object, with each category's score, feedback, and the total score. For example:
+  
+  \`\`\`json
+  {
+    "total": [total_score],
+    "composition": {
+      "score": [score],
+      "feedback": "[feedback]"
+    },
+    "lighting": {
+      "score": [score],
+      "feedback": "[feedback]"
+    },
+    ...
+    "summary": "[Overall impression and recommendations]"
+  }
+  \`\`\`
+  
+  Include specific suggestions for improvement in each category, if applicable`;
 
-Categories and their weight towards the total score:
-1. Composition (16.67%)
-2. Lighting (16.67%)
-3. Clothing (16.67%)
-4. Expression (16.67%)
-5. Background (16.67%)
-6. Image Quality (16.67%)
-
-Calculate the weighted average for these categories to provide an overall score out of 100. Then, give a summary of the overall impression the picture makes in a professional context, including any recommendations for adjustments to improve the professional impact of the picture.
-`;
-
-  // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
     stream: true,
+    temperature: 0.3,
     messages: [
       {
         role: "user",
         content: [
-          { type: "text", text: prompt },
+          { type: "text", text: imagePrompt },
           {
             type: "image_url",
             image_url: {
-              url: imageUrl,
+              url: prompt as string,
+              detail: "low",
             },
           },
         ],
       },
     ],
+    max_tokens: 500,
   });
 
   const stream = OpenAIStream(response);
 
-  console.log(response);
-
-  // Respond with the stream
   return new StreamingTextResponse(stream);
 }

@@ -4,7 +4,6 @@ import type { NextAuthOptions } from "next-auth";
 import LinkedinProvider from "next-auth/providers/linkedin";
 import { env } from "@/env";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 type ImageElement = {
   data: {
@@ -28,13 +27,6 @@ type LinkedInData = {
 
 export const authOptions = {
   secret: env.NEXTAUTH_SECRET,
-  // callbacks: {
-  //   async signIn({ profile }) {
-  //     const router = useRouter();
-  //     void router.push(`/u?i=${profile?.image}`);
-  //     return true;
-  //   },
-  // },
   providers: [
     LinkedinProvider({
       clientId: env.LINKEDIN_CLIENT_ID,
