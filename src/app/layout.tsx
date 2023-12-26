@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
+import { Analytics } from "@vercel/analytics/react";
 
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import SessionProvider from "./session-provider";
@@ -73,6 +74,7 @@ export default async function RootLayout({
             </div>
           </div>
         </div>
+        <Analytics />
       </body>
     </html>
   );
