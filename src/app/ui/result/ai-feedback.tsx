@@ -58,6 +58,7 @@ export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
   const { completion, complete } = useCompletion({
     api: "/api/chat",
     onFinish: (prompt, completion) => {
+      completion = completion.replace(/```json/g, "").replace(/```/g, "");
       const feedback = JSON.parse(completion) as Feedback[];
       const totalScore = feedback.reduce(
         (total, category) => total + category.score,

@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   const { prompt } = await req.json();
 
   const imagePrompt = `
-Analyze my headshot and provide a structured evaluation in the form of a JSON array. Rate each of the following categories on a scale from 0 to 100, where 100 represents excellence. Include detailed, professional, and constructive feedback for each category.
+Analyze my headshot and provide a structured evaluation in the form of a JSON array. Rate each of the following categories on a scale from 0 to 100, where 100 represents excellence, 90-100 indicates amazing, 80-90 signifies good, 70-80 denotes okay, 60-70 implies that it needs some work, and 50< implies that it needs a lot of work. Include detailed, professional, and constructive feedback for each category.
 
 Categories to be evaluated, with specific criteria:
 
@@ -37,11 +37,11 @@ Categories to be evaluated, with specific criteria:
     - Emotion conveyed
 
 5. Background
-    - Relevance and distraction level
+    - Relevance and distraction level, an interesting background is fine
     - Complementing or contrasting with the subject
     - Overall aesthetic contribution to the image
 
-Return the output as a JSON array (don't return any Markdown), with each category's score, and feedback in an array. Ensure the feedback is no more than 2 sentences. For example:
+Return the output as a JSON array (don't return any Markdown), with each category's score, and feedback in an array. Ensure the feedback is directed to the user by using "you" instead of "subject" and ensure that the feedback is no more than 2 sentences. For example:
 
 Query: [image]
 
