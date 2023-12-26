@@ -10,6 +10,7 @@ import {
   PhotoIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 import Error from "./error";
 
 function classNames(...classes: string[]) {
@@ -240,7 +241,14 @@ export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
             <p className="mb-2 truncate text-2xl font-medium text-gray-500">
               Total Score
             </p>
-            <p className="text-5xl font-semibold text-gray-900">
+            <p
+              className={clsx("text-5xl font-semibold text-gray-900", {
+                "text-green-300": totalScore >= 90,
+                "text-lime-500": totalScore < 90 && totalScore >= 80,
+                "text-yellow-500": totalScore < 80 && totalScore >= 70,
+                "text-red-500": totalScore < 70,
+              })}
+            >
               {totalScore}/100
             </p>
           </div>

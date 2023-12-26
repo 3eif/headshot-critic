@@ -10,6 +10,29 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { prompt } = await req.json();
+
+  const key = JSON.stringify(prompt);
+  const cached = await kv.get(key);
+  if (cached) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    const chunks = (cached as string).split(" ");
+    const stream = new ReadableStream({
+      async start(controller) {
+        for (const chunk of chunks) {
+          const bytes = new TextEncoder().encode(chunk + " ");
+          controller.enqueue(bytes);
+          await new Promise((r) =>
+            setTimeout(r, Math.floor(Math.random() * 10) + 1),
+          );
+        }
+        controller.close();
+      },
+    });
+    return new StreamingTextResponse(stream);
+  }
+
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
     const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({
@@ -40,8 +63,6 @@ export async function POST(req: Request) {
       "KV_REST_API_URL and KV_REST_API_TOKEN env vars not found, not rate limiting...",
     );
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { prompt } = await req.json();
 
   const imagePrompt = `
 Analyze my headshot and provide a structured evaluation in the form of a JSON array. Rate each of the following categories on a scale from 0 to 100, where 100 represents excellence, 90-100 indicates amazing, 80-90 signifies good, 70-80 denotes okay, 60-70 implies that it needs some work, and 50< implies that it needs a lot of work. Include detailed, professional, and constructive feedback for each category.
@@ -117,7 +138,12 @@ Include specific suggestions for improvement in each category, based on the crit
     max_tokens: 600,
   });
 
-  const stream = OpenAIStream(response);
+  const stream = OpenAIStream(response, {
+    async onFinal(completion) {
+      await kv.set(key, completion);
+      await kv.expire(key, 60 * 60);
+    },
+  });
 
   return new StreamingTextResponse(stream);
 }
