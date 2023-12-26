@@ -47,8 +47,8 @@ export default async function RootLayout({
                 }}
               />
             </div>
-            <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:py-32">
-              <div className="text-center">
+            <div className="py-16 text-center sm:py-16 lg:py-24">
+              <div className="mx-auto max-w-2xl">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                   Headshot Critic
                 </h1>
@@ -56,8 +56,8 @@ export default async function RootLayout({
                   Upload your headshot via your LinkedIn profile or by uploading
                   an image and we&apos;ll give you feedback on it.
                 </p>
-                <SessionProvider session={session}>{children}</SessionProvider>
               </div>
+              <SessionProvider session={session}>{children}</SessionProvider>
             </div>
             <div
               className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"

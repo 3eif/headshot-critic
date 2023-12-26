@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { NextAuthOptions } from "next-auth";
 import LinkedinProvider from "next-auth/providers/linkedin";
+import { utapi } from "@/server/uploadthing";
 import { env } from "@/env";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 type ImageElement = {
   data: {
@@ -28,13 +28,6 @@ type LinkedInData = {
 
 export const authOptions = {
   secret: env.NEXTAUTH_SECRET,
-  // callbacks: {
-  //   async signIn({ profile }) {
-  //     const router = useRouter();
-  //     void router.push(`/u?i=${profile?.image}`);
-  //     return true;
-  //   },
-  // },
   providers: [
     LinkedinProvider({
       clientId: env.LINKEDIN_CLIENT_ID,
@@ -84,7 +77,9 @@ async function getProfilePictureUrl(accessToken: string) {
 
     const data: LinkedInData = response.data;
     const imageUrl = getHighestResolutionImageUrl(data);
-    return imageUrl;
+    if (!imageUrl) throw new Error("No image url found");
+    const uploadedFileUrl = await utapi.uploadFilesFromUrl(imageUrl);
+    return uploadedFileUrl.data!.url;
   } catch (error) {
     console.log(error);
     return null;
