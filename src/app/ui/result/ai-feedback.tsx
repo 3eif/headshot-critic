@@ -47,6 +47,18 @@ const categoryIcon = (category: string) => {
   }
 };
 
+const getOneWordFeedback = (score: number) => {
+  if (score >= 90) {
+    return "Excellent!";
+  } else if (score < 90 && score >= 80) {
+    return "Good!";
+  } else if (score < 80 && score >= 70) {
+    return "Meh!";
+  } else {
+    return "Needs Improvement!";
+  }
+};
+
 export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
   const [output, setOutput] = useState<Feedback[]>();
   const [totalScore, setTotalScore] = useState<number>(0);
@@ -238,7 +250,7 @@ export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
       ) : (
         <div>
           <div className="mb-5 text-center">
-            <p className="mb-2 truncate text-2xl font-medium text-gray-500">
+            <p className="mb-5 truncate text-2xl font-medium text-gray-500">
               Total Score
             </p>
             <p
@@ -250,9 +262,11 @@ export default function AiFeedback({ imageUrl }: { imageUrl: string }) {
               })}
             >
               {totalScore}/100
+              <br className="mb-3" />
+              {getOneWordFeedback(totalScore)}
             </p>
           </div>
-          <dl className="grid grid-rows-1 gap-5">
+          <dl className="mt-10 grid grid-rows-1 gap-5">
             {output.map((category) => (
               <div
                 key={category.category}

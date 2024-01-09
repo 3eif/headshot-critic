@@ -65,7 +65,7 @@ export async function POST(req: Request) {
   }
 
   const imagePrompt = `
-Analyze my headshot and provide a structured evaluation in the form of a JSON array. Rate each of the following categories on a scale from 0 to 100, where 100 represents excellence, 90-100 indicates amazing, 80-90 signifies good, 70-80 denotes okay, 60-70 implies that it needs some work, and 50< implies that it needs a lot of work. Include detailed, professional, and constructive feedback for each category.
+Analyze my headshot and provide a structured evaluation in the form of a JSON array. Rate each of the following categories on a scale from 0 to 100, where 100 represents excellence, 90-100 indicates amazing, 80-90 signifies good, 70-80 denotes okay, 60-70 implies that it needs some work, and 50< implies that it needs a lot of work. Include detailed, professional, and constructive feedback for each category. Feel free to be as harsh as you want in terms of score. The goal is to help me improve my headshot as much as possible.
 
 Categories to be evaluated, with specific criteria:
 
