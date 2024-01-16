@@ -55,7 +55,7 @@ export default async function RootLayout({
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
                   Upload your headshot via your LinkedIn profile or by uploading
-                  an image and we&apos;ll give you feedback on it.
+                  an image and receive feedback.
                 </p>
               </div>
               <SessionProvider session={session}>{children}</SessionProvider>
