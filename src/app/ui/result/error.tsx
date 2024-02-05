@@ -11,8 +11,11 @@ export default function Error({ error }: { error: string }) {
           <h3 className="text-left text-sm font-medium text-red-800">
             An error occurred while generating your feedback:
           </h3>
-          <div className="mt-2 text-left text-sm text-red-700">
+          <div className="my-1 text-left text-sm text-red-700">
             <p>{error}</p>
+          </div>
+          <div className="text-left text-sm text-red-700">
+            <p>Please try again with a different photo.</p>
           </div>
         </div>
       </div>

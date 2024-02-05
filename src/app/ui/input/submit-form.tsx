@@ -7,7 +7,7 @@ export default async function SubmitForm() {
       <LoginButton />
       <p className="my-5">Or</p>
       <UploadPhoto />
-      <p className="mt-2 text-sm text-gray-500" id="email-description">
+      <p className="mt-2 text-sm text-gray-500">
         Photos are automatically deleted after 24 hours.
       </p>
     </div>

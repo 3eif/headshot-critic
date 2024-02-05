@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import SessionProvider from "./session-provider";
 import { getServerSession } from "next-auth/next";
+import { SocialButtons } from "./ui/social-buttons";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -55,10 +56,14 @@ export default async function RootLayout({
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
                   Upload your headshot via your LinkedIn profile or by uploading
-                  an image and receive feedback.
+                  an image and receive feedback!
                 </p>
               </div>
               <SessionProvider session={session}>{children}</SessionProvider>
+              <p className="text-md mt-8 text-gray-600">
+                Made by Seif Abdelaziz
+              </p>
+              <SocialButtons />
             </div>
             <div
               className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
